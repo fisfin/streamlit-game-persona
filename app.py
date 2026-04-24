@@ -121,7 +121,7 @@ if not st.session_state['logged_in']:
 
     with st.form("login_form"):
         st.subheader("로그인 후 테스트를 시작하세요")
-        input_id = st.text_input("학번 (ID)", placeholder="학번 8자리를 입력하세요")
+        input_id = st.text_input("학번 (ID)", placeholder="학번을 입력하세요")
         input_pw = st.text_input("이름 (PW)", placeholder="성함을 입력하세요")
         submit_button = st.form_submit_button("모험 시작하기 🚀")
         
