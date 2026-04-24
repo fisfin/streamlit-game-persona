@@ -107,21 +107,39 @@ if 'user_answers' not in st.session_state:
     st.session_state['user_answers'] = {} 
 
 # ==========================================
-# 6. 화면 구성: 로그인
+# 6. 화면 구성: 로그인 (가이드라인 준수 보완 버전)
 # ==========================================
 if not st.session_state['logged_in']:
-    # [수정됨] image 폴더 경로 지정
+    # 시작 화면 배경
     st.image("image/start_bg.jpg", use_container_width=True)
     st.title("🎮 게임 성향 테스트")
-    st.info("🔥 현재까지 많은 게이머가 자신의 '진짜 직업'을 찾았습니다!")
     
+    # [보완] 실제 로그인 처리를 위한 사용자 정보 정의
+    # 가이드라인의 '미리 정의된 사용자 정보와 비교' 방식 적용
+    USER_ID = "2023204005"  # 본인의 실제 학번으로 수정하세요
+    USER_PW = "양승모"      # 본인의 성함
+
     with st.form("login_form"):
-        nickname = st.text_input("사용자 닉네임", placeholder="예: 홍길동")
-        if st.form_submit_button("모험 시작하기 🚀"):
-            if nickname:
+        st.subheader("로그인 후 테스트를 시작하세요")
+        input_id = st.text_input("학번 (ID)", placeholder="학번 8자리를 입력하세요")
+        input_pw = st.text_input("이름 (PW)", placeholder="성함을 입력하세요")
+        submit_button = st.form_submit_button("모험 시작하기 🚀")
+        
+        if submit_button:
+            # [보완] 입력값과 정의된 정보 비교 (실제 로그인 처리 로직)
+            if input_id == USER_ID and input_pw == USER_PW:
                 st.session_state['logged_in'] = True
-                st.session_state['user_nickname'] = nickname
+                st.session_state['user_nickname'] = input_pw # 로그인 성공 시 상태 구분
+                st.success(f"{input_pw}님, 환영합니다! 테스트 화면으로 이동합니다.")
+                time.sleep(1) # 성공 메시지를 보여주기 위한 짧은 대기
                 st.rerun()
+            elif input_id == "" or input_pw == "":
+                st.warning("아이디와 비밀번호를 모두 입력해주세요.")
+            else:
+                # [보완] 로그인 실패에 따른 처리
+                st.error("사용자 정보가 일치하지 않습니다. 학번과 성함을 다시 확인해주세요.")
+
+    st.info("💡 과제 시연을 위해 ID는 '학번', PW는 '성함'으로 설정되어 있습니다.")
 
 # ==========================================
 # 7. 화면 구성: 1문제씩 보여주는 퀴즈
